@@ -1,4 +1,3 @@
-You're right that the installation section seems a bit mixed. I’ll clarify and clean up the markdown and the bash commands for the installation part in your README. Here's the corrected version:
 
 ```markdown
 # HealthHaven: Revolutionizing Healthcare for All 🌍
