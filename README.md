@@ -2,7 +2,11 @@
 ```markdown
 # HealthHaven: Revolutionizing Healthcare for All 🌍
 
-**HealthHaven** is a comprehensive healthcare platform designed to promote healthy lives and ensure well-being for all ages. Aligned with the United Nations' **Sustainable Development Goal 3 (Good Health and Well-being)**, HealthHaven leverages technology to enhance access to healthcare services, deliver preventive care, and empower users with real-time health monitoring and patient management tools.
+**HealthHaven** is a comprehensive healthcare platform designed to promote healthy lives and
+ ensure well-being for all ages. Aligned with the United Nations' **Sustainable Development
+Goal 3 (Good Health and Well-being)**, HealthHaven leverages technology to enhance access
+to healthcare services, deliver preventive care, and empower users with real-time health
+monitoring and patient management tools.
 
 ---
 
@@ -10,7 +14,7 @@
 
 ### 1. **Access to Healthcare Services**
 - **Telemedicine**: Virtual consultations with licensed healthcare professionals.
-- **Facility Locator**: Find nearby healthcare facilities based on your location.
+- **Facility Locator**: Find nearby healthcare facilities based on location.
 - **Pharmacy Integration**: Order prescriptions directly through the app.
 
 ### 2. **Preventive Care and Education**
@@ -32,7 +36,7 @@
 ## 🌍 Social Impact and SDG Alignment
 
 ### **Primary SDG Alignment**
-- **Goal 3: Good Health and Well-being**: Ensure healthy lives and promote well-being for all at all ages.
+- **Goal 3: Good Health and Well-being**: Ensure healthy lives and promote well-being for all ages.
 
 ### **Secondary SDG Contributions**
 - **Goal 1: No Poverty**: Affordable healthcare solutions to reduce financial strain.
@@ -151,7 +155,9 @@ We are actively seeking collaborations with:
 ---
 
 ### **Future Setup for Flutter Mobile App**
-The mobile application will be added later using **Flutter**. Instructions for setting up and running the mobile app will be updated once it is integrated into the project.
+The mobile application will be added later using **Flutter**. 
+Instructions for setting up and running the mobile app 
+will be updated once it is integrated into the project.
 
 ---
 
