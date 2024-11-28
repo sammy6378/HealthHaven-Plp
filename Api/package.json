@@ -1,0 +1,42 @@
+{
+  "name": "backend-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch ./src/index.ts",
+    "start": "node ./dist/index.js",
+    "build": "tsc",
+    "studio": "drizzle-kit studio",
+    "push": " drizzle-kit push"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hono/node-server": "^1.13.3",
+    "@hono/zod-validator": "^0.4.1",
+    "@neondatabase/serverless": "^0.10.1",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.34.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "hono": "^4.6.8",
+    "nodemailer": "^6.9.16",
+    "nodemon": "^3.1.7",
+    "socket.io": "^4.8.1",
+    "typescript": "^5.6.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/ejs": "^3.1.5",
+    "@types/node": "^22.8.2",
+    "@types/nodemailer": "^6.4.17",
+    "@types/pg": "^8.11.10",
+    "drizzle-kit": "^0.25.0",
+    "tsx": "^4.19.2"
+  }
+}
