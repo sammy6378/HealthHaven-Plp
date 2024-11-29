@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Your Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            line-height: 1.6;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Hello</h2>
+
+    <p>We've received your request to reset your password. Please follow these steps:</p>
+
+    <p><strong>Your new login credentials:</strong></p>
+    <ul>
+        <li>Password Reset Link: <a href="<%= link %>">Click here to set a new password</a></li>
+    </ul>
+
+    <p>The password reset link will expire in 3 hours. If you didn't request this, please contact our support team immediately.</p>
+
+    <p>If you have any questions or need assistance, please don't hesitate to reach out to our customer support team at <a href="mailto:support@example.com">support@example.com</a>.</p>
+
+    <p>Thank you for your patience.</p>
+    <p>These email was intended for  <%= email %></p>
+
+    <p>Best regards,<br>
+    The HararHealthcare Team</p>
+</body>
+</html>
