@@ -16,7 +16,7 @@ export type TAuthResponse = {
 
 
 export type TPatient ={
-    id:number;
+    _id:number;
     first_name: string;
     last_name: string;
     email: string;
@@ -46,7 +46,7 @@ export type TRegister = {
 }
 
 export type TAppointment = {
-    id:number;
+    _id:number;
     patient_id:number;
     doctor_id:number;
     date: Date;
@@ -57,7 +57,7 @@ export type TAppointment = {
 
 // profile
 export type TProfile = {
-    id:number;
+    _id:number;
     age: number;
     gender: string;
     address: string;
@@ -66,7 +66,7 @@ export type TProfile = {
 
 
 export type TLogin = {
-    id: number;
+    _id: number;
     first_name: string;
     last_name: string;
     email: string;
@@ -76,7 +76,7 @@ export type TLogin = {
 // doctor
 
 export type TDoctor ={
-    id: number;
+    _id: number;
     first_name: string;
     last_name: string;
     specialization: string;

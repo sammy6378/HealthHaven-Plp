@@ -31,7 +31,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (patients) {
-      const userPatientData = patients.find((patient) => patient.id === loggedInUserId);
+      const userPatientData = patients.find((patient) => patient._id === loggedInUserId);
 
       if (userPatientData) {
         setFormData((prev) => ({

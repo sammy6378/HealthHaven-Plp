@@ -44,7 +44,7 @@ const Doctor = mongoose.model('Doctor', doctorSchema);
 
 // Profile schema and model
 const profileSchema = new mongoose.Schema({
-    patient_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
+    id: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
     age: { type: Number, required: true },
     gender: { type: String, required: true },
     address: { type: String, default: '', required: true },
