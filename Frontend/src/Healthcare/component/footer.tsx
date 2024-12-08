@@ -38,7 +38,7 @@ function Footer() {
         <p>
           <i className="ri-map-pin-2-fill"></i> 0340,Kerugoya, Kirinyaga
         </p>
-        <p><i className="ri-mail-fill"></i> support@Healthhaven.com</p>
+        <p><i className="ri-mail-fill"></i> support@Harar.com</p>
         <p><i className="ri-phone-fill"></i> (+254) 3456 789</p>
       </div>
     </div>

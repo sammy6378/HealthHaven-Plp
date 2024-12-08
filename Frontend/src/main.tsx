@@ -21,7 +21,7 @@ import PatientDetails from './Dashboard/DoctorDash/pages/PatientDetails.tsx'
 import Dash from './Dashboard/UsersDash/Dash.tsx'
 import AppointmentPage from './Dashboard/UsersDash/pages/AppointmentPage.tsx'
 import BillingPage from './Dashboard/UsersDash/pages/Billings.tsx'
-import DoctorSearch from './Dashboard/UsersDash/pages/FindDoctor.tsx'
+import DoctorSearch from './Dashboard/UsersDash/pages/doctor/FindDoctor.tsx'
 import MedicalRecordsPage from './Dashboard/UsersDash/pages/MedicalRecords.tsx'
 import MedicalRecordDetails from './Dashboard/UsersDash/pages/RecordDetails.tsx'
 import DashboardUi from './Dashboard/UsersDash/pages/Frontpage.tsx'
@@ -101,51 +101,51 @@ const router = createBrowserRouter([
   // doctors dashboard
   {
     path: '/doctor-dashboard',
-    element: <Dashboard><DashLayout/></Dashboard>,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><DashLayout/></Dashboard></ProtectedRoute>,
     errorElement: <Error />,
   },
   {
     path: '/doctor-dashboard/appointments',
-    element: <Dashboard><AppointmentTable /></Dashboard>,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><AppointmentTable /></Dashboard></ProtectedRoute>,
     errorElement: <Error />,
   },
 
   {
     path: '/doctor-dashboard/prescriptions',
-    element: <Dashboard><Prescriptions /></Dashboard>,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><Prescriptions /></Dashboard></ProtectedRoute>,
     errorElement: <Error />,
   },
   
   {
     path: '/doctor-dashboard/patient-lists',
-    element: <Dashboard><PatientList /></Dashboard>,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><PatientList /></Dashboard></ProtectedRoute>,
     errorElement: <Error />,
   },
   {
     path: '/doctor-dashboard/settings',
-    element: <Dashboard><SettingsPage /></Dashboard>,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><SettingsPage /></Dashboard></ProtectedRoute>,
     errorElement: <Error />,
   },
   
   {
     path: '/doctor-dashboard/patient-list/more-details',
-    element: <Dashboard><PatientDetails /></Dashboard>,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><PatientDetails /></Dashboard></ProtectedRoute>,
     errorElement: <Error />,
   },
   {
     path: '/doctor-dashboard/appointment-notifications',
-    element: <Dashboard><AppointmentTable /></Dashboard>,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><AppointmentTable /></Dashboard></ProtectedRoute>,
     errorElement: <Error />,
   },
 
   {
     path: '/doctor-dashboard/all-medicines',
-    element: <Dashboard><Medicines /></Dashboard>,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><Medicines /></Dashboard></ProtectedRoute>,
     errorElement: <Error />,
   },
   {
     path:'/doctor-dashboard/prescriptions-fill-out-form',
-    element: <Dashboard><PrescriptionForm /></Dashboard> ,
+    element: <ProtectedRoute requiredRole='doctor'><Dashboard><PrescriptionForm /></Dashboard></ProtectedRoute> ,
     errorElement: <Error />,
   },
 

@@ -17,13 +17,13 @@ const ProfilePage = () => {
     age: '',
     gender: '',
     address: '',
-    photo: '',
+    photo: null as File | null,
   });
 
   const [step, setStep] = useState(1); // Track the form step
   const authState = useSelector((state: RootState) => state.auth);
   const user = authState.patient as TAuthResponse | null;
-  const loggedInUserId = user ? user.patient_id : '';
+  const loggedInUserId = user ? user.id : '';
 
   const { data: patients } = useGetPatientsQuery();
   const [createProfile, { error }] = useCreateProfileMutation();
@@ -67,7 +67,9 @@ const ProfilePage = () => {
     setLoading(true);
 
     const formDataPhoto = new FormData();
-    formDataPhoto.append('file', formData.photo);
+    if (formData.photo) {
+      formDataPhoto.append('file', formData.photo);
+    }
     formDataPhoto.append('cloud_name', import.meta.env.VITE_CLOUD_NAME);
     formDataPhoto.append('upload_preset', import.meta.env.VITE_CLOUD_PRESET);
 
@@ -93,60 +95,65 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <ToastContainer />
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-lg p-8">
+      <div className="bg-white shadow-xl rounded-lg w-full max-w-lg p-8">
         {step === 1 ? (
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Step 1: Basic Information</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Profile Information</h2>
             <div className="space-y-4">
-              <input
-                type="text"
-                name="first_name"
-                value={formData.first_name}
-                placeholder='First Name'
-                className="w-full p-3 border border-gray-300 rounded-md"
-                disabled
-              />
-              <input
-                type="text"
-                name="last_name"
-                value={formData.last_name}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                disabled
-              />
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                disabled
-              />
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                disabled
-              />
+              <div className="flex justify-between">
+                <label className="text-gray-700">First Name:</label>
+                <p className="text-gray-600">{formData.first_name}</p>
+              </div>
+              <div className="flex justify-between">
+                <label className="text-gray-700">Last Name:</label>
+                <p className="text-gray-600">{formData.last_name}</p>
+              </div>
+              <div className="flex justify-between">
+                <label className="text-gray-700">Email:</label>
+                <p className="text-gray-600">{formData.email}</p>
+              </div>
+              <div className="flex justify-between">
+                <label className="text-gray-700">Phone:</label>
+                <p className="text-gray-600">{formData.phone}</p>
+              </div>
+              <div className="flex justify-between">
+                <label className="text-gray-700">Age:</label>
+                <p className="text-gray-600">{formData.age}</p>
+              </div>
+              <div className="flex justify-between">
+                <label className="text-gray-700">Gender:</label>
+                <p className="text-gray-600">{formData.gender}</p>
+              </div>
+              <div className="flex justify-between">
+                <label className="text-gray-700">Address:</label>
+                <p className="text-gray-600">{formData.address}</p>
+              </div>
+              <div className="flex justify-between">
+                <label className="text-gray-700">Profile Picture:</label>
+                {formData.photo && (
+                  <img src={URL.createObjectURL(formData.photo)} alt="Profile" className="w-24 h-24 rounded-full" />
+                )}
+              </div>
               <button
                 type="button"
                 onClick={handleCompleteProfile}
-                className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+                className="w-full bg-blue-500 text-white py-2 mt-6 rounded-md hover:bg-blue-600"
               >
-                Complete Profile
+                Edit Profile
               </button>
             </div>
           </div>
         ) : (
           <form onSubmit={handleSubmitStep2} className="space-y-4">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Step 2: Complete Your Profile</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Step 2: Complete Your Profile</h2>
             <input
               type="number"
               name="age"
               value={formData.age}
               onChange={handleChange}
-              placeholder='Age'
+              placeholder="Age"
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
@@ -155,7 +162,7 @@ const ProfilePage = () => {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              placeholder='Gender'
+              placeholder="Gender"
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
@@ -163,7 +170,7 @@ const ProfilePage = () => {
               name="address"
               value={formData.address}
               onChange={handleChange}
-              placeholder='Address'
+              placeholder="Address"
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             ></textarea>

@@ -2,25 +2,18 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { RootState } from '../../store/Store';
 import React from 'react';
+import { AuthState } from './UsersSlice';
 
 interface ProtectedRouteProps {
     children: React.ReactNode;
-    requiredRole: 'user' | 'admin';
+    requiredRole: 'user' | 'admin' | 'doctor';
 }
 
 const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
-    const userAuthState = useSelector((state: RootState) => state.auth);
-    const adminAuthState = useSelector((state: RootState) => state.adminAuth);
+    const authState = useSelector((state: RootState) => state.auth) as AuthState;
+    const { isAuthenticated, role } = authState;
 
-    let isAuthenticated = false;
-
-    if (requiredRole === 'user' && userAuthState.isAuthenticated) {
-        isAuthenticated = true;
-    } else if (requiredRole === 'admin' && adminAuthState.isAuthenticated) {
-        isAuthenticated = true;
-    }
-
-    if (!isAuthenticated) {
+    if (!isAuthenticated || role !== requiredRole) {
         return <Navigate to="/login" />;
     }
 

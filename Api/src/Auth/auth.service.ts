@@ -1,11 +1,8 @@
-import { patients,admins,doctors } from "../drizzle/schema";
-import db from "../drizzle/db";
-import { eq } from "drizzle-orm"
-
-
+import { Context } from "hono";
+import { Patient, Admin, Doctor } from "../models/schema";
+import bcrypt from 'bcrypt'
 
 export type TPatient = {
-    patient_id: number;
     first_name: string;
     last_name: string;
     email: string;
@@ -13,10 +10,9 @@ export type TPatient = {
     phone: string;
     image: string;
     role: string;
-}
+};
 
-export type TDoctor ={
-    doctor_id: number;
+export type TDoctor = {
     first_name: string;
     last_name: string;
     specialization: string;
@@ -26,20 +22,18 @@ export type TDoctor ={
     status: boolean;
     role: string;
     password: string;
-}
+};
 
-export type TAdmin ={
-    admin_id: number;
+export type TAdmin = {
     first_name: string;
     last_name: string;
     email: string;
     password: string;
     role: string;
-}
-
+};
 
 export interface User {
-    id: number;
+    id: string;
     first_name: string;
     last_name: string;
     role: string;
@@ -47,168 +41,74 @@ export interface User {
     password: string;
 }
 
-
 // Register patient Service
-export const createService = async (patientData:TPatient):Promise<string | null> => {
+export const createService = async (patientData: TPatient): Promise<string | null> => {
     const { email } = patientData;
 
     try {
-        // Check if a patient with the provided email already exists
-        const existingPatient = await db
-            .select()
-            .from(patients)
-            .where(eq(patients.email, email))
-            .then((patients) => patients[0]);
-
+        const existingPatient = await Patient.findOne({ email });
         if (existingPatient) {
             throw new Error("Patient with this email already exists");
         }
 
-        // Insert the new patient into the database
-        const [newPatient] = await db
-            .insert(patients)
-            .values({
-                first_name: patientData.first_name,
-                last_name: patientData.last_name,
-                email: patientData.email,
-                password: patientData.password,
-                phone: patientData.phone,
-                image: patientData.image,
-            })
-            .returning({
-                id: patients.patient_id,
-                first_name: patients.first_name,
-                last_name: patients.last_name,
-                email: patients.email,
-                image: patients.image,
-                password: patients.password,
-                phone: patients.phone,
-            });
+        const newPatient = new Patient(patientData);
+        await newPatient.save();
 
         return "Patient created successfully";
     } catch (error: any) {
-        // Checking if the error is related to a unique constraint violation
-        if (error.code === '23505' && error.detail.includes('patients_email_unique')) {
-            throw new Error('A patient with this email already exists');
-        }
-        
-        // Throw the error 
-        throw new Error(error.message || 'Failed to create patient');
+        throw new Error(error.message || "Failed to create patient");
     }
 };
-
 
 // Register Doctor Service
 export const createDoctorService = async (doctorData: TDoctor): Promise<string | null> => {
     const { email } = doctorData;
 
     try {
-        // Check if a doctor with the provided email already exists
-        const existingDoctor = await db
-            .select()
-            .from(doctors)
-            .where(eq(doctors.email, email))
-            .then((doctors) => doctors[0]);
-
+        const existingDoctor = await Doctor.findOne({ email });
         if (existingDoctor) {
             throw new Error("Doctor with this email already exists");
         }
 
-     
-        // Insert the new doctor into the database
-        const [newDoctor] = await db
-            .insert(doctors)
-            .values({
-                first_name: doctorData.first_name,
-                last_name: doctorData.last_name,
-                password: doctorData.password,
-                specialization: doctorData.specialization,
-                email: doctorData.email,
-                phone: doctorData.phone,
-                image: doctorData.image,
-                role: doctorData.role, // Ensure role is set to 'doctor'
-            })
-            .returning({
-                id: doctors.doctor_id,
-                first_name: doctors.first_name,
-                last_name: doctors.last_name,
-                email: doctors.email,
-                role: doctors.role,
-            });
+        const newDoctor = new Doctor(doctorData);
+        await newDoctor.save();
 
         return "Doctor created successfully";
     } catch (error: any) {
-        if (error.code === '23505' && error.detail.includes('doctors_email_unique')) {
-            throw new Error('A doctor with this email already exists');
-        }
-
-        throw new Error(error.message || 'Failed to create doctor');
+        throw new Error(error.message || "Failed to create doctor");
     }
 };
 
-
 // Register Admin Service
 export const createAdminService = async (adminData: TAdmin): Promise<string | null> => {
-
     const { email } = adminData;
 
     try {
-        // Check if an admin with the provided email already exists
-        const existingAdmin = await db
-            .select()
-            .from(admins)
-            .where(eq(admins.email, email))
-            .then((admins) => admins[0]);
-
+        const existingAdmin = await Admin.findOne({ email });
         if (existingAdmin) {
             throw new Error("Admin with this email already exists");
         }
 
-        // Insert the new admin into the database
-        const [newAdmin] = await db
-            .insert(admins)
-            .values({
-                first_name: adminData.first_name,
-                last_name: adminData.last_name,
-                email: adminData.email,
-                password: adminData.password,
-                role: adminData.role, // Ensure role is set to 'admin'
-            })
-            .returning({
-                id: admins.admin_id,
-                first_name: admins.first_name,
-                last_name: admins.last_name,
-                email: admins.email,
-                role: admins.role,
-            });
+        const newAdmin = new Admin(adminData);
+        await newAdmin.save();
 
         return "Admin created successfully";
     } catch (error: any) {
-        if (error.code === '23505' && error.detail.includes('admins_email_unique')) {
-            throw new Error('An admin with this email already exists');
-        }
-
-        throw new Error(error.message || 'Failed to create admin');
+        throw new Error(error.message || "Failed to create admin");
     }
-}
-
+};
 
 // Login patient Service
 export const authLoginService = async (email: string): Promise<User | null> => {
     try {
-        // Query the patient with the provided email
-        const patient = await db
-            .select()
-            .from(patients)
-            .where(eq(patients.email, email))
-            .then((patients) => patients[0]);
+        const patient = await Patient.findOne({ email });
 
         if (!patient) {
-            return null; // Return null if no patient is found
+            return null;
         }
 
         return {
-            id: patient.patient_id,
+            id: patient._id.toString(),
             first_name: patient.first_name,
             last_name: patient.last_name,
             role: patient.role,
@@ -216,33 +116,26 @@ export const authLoginService = async (email: string): Promise<User | null> => {
             password: patient.password,
         };
     } catch (error) {
-        console.error("Error in authLoginService:", error); // Log the error details
-        return null; // Return null in case of an error
+        console.error("Error in authLoginService:", error);
+        return null;
     }
 };
-
-
 
 // Admin Login Service
 export const authAdminLoginService = async (email: string): Promise<User | null> => {
     try {
-        // Query the admin with the provided email
-        const admin = await db
-            .select()
-            .from(admins)
-            .where(eq(admins.email, email))
-            .then((admins) => admins[0]);
+        const admin = await Admin.findOne({ email });
 
         if (!admin) {
-            return null; // Return null if no admin is found
+            return null;
         }
 
         return {
-            id: admin.admin_id,
+            id: admin._id.toString(),
             first_name: admin.first_name,
             last_name: admin.last_name,
             role: admin.role,
-            status: admin.status,
+            status: true, 
             password: admin.password,
         };
     } catch (error) {
@@ -251,23 +144,17 @@ export const authAdminLoginService = async (email: string): Promise<User | null>
     }
 };
 
-
 // Doctor Login Service
 export const authDoctorLoginService = async (email: string): Promise<User | null> => {
     try {
-        // Query the doctor with the provided email
-        const doctor = await db
-            .select()
-            .from(doctors)
-            .where(eq(doctors.email, email))
-            .then((doctors) => doctors[0]);
+        const doctor = await Doctor.findOne({ email });
 
         if (!doctor) {
-            return null; // Return null if no doctor is found
+            return null;
         }
 
         return {
-            id: doctor.doctor_id,
+            id: doctor._id.toString(),
             first_name: doctor.first_name,
             last_name: doctor.last_name,
             role: doctor.role,
@@ -280,6 +167,23 @@ export const authDoctorLoginService = async (email: string): Promise<User | null
     }
 };
 
+// Reset Password Service
+export const resetPasswordService = async (email: string, newPassword: string): Promise<string> => {
+    try {
+        const user = await Patient.findOne({ email }) ||
+                     await Doctor.findOne({ email }) ||
+                     await Admin.findOne({ email });
 
+        if (!user) {
+            throw new Error("User not found");
+        }
 
-// reset password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        return "Password reset successfully";
+    } catch (error: any) {
+        throw new Error(error.message || "Failed to reset password");
+    }
+};

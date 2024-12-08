@@ -16,7 +16,7 @@ export default function SettingsPage() {
     <div className="flex flex-col overflow-y-auto gap-5 md:flex-row  p-6">
       <div className="w-full md:w-1/3 p-4 bg-white shadow-lg rounded-lg mb-4 md:mb-0">
         <h2 className="text-lg font-medium text-gray-900 mb-6">Settings Nav</h2>
-        <ul className=' text-nowrap'>
+        <ul className="text-nowrap">
           {settingsNav.map((item) => (
             <li
               key={item.section}
@@ -25,13 +25,13 @@ export default function SettingsPage() {
               }`}
               onClick={() => setActiveSection(item.section)}
             >
-              <item.icon className="mr-4" /> 
-              {item.name}
+              <item.icon className="mr-4" /> {item.name}
             </li>
           ))}
         </ul>
       </div>
       <div className="w-full md:w-3/4 p-6 bg-white shadow-lg rounded-lg">
+        {activeSection === 'account' && <AccountDetails />}
         {activeSection === 'billing' && <BillingInformation />}
         {activeSection === 'password' && <ChangePassword />}
         {activeSection === 'Delete' && <DeleteAccount />}
@@ -39,6 +39,61 @@ export default function SettingsPage() {
     </div>
   );
 }
+
+function AccountDetails() {
+  return (
+    <div>
+      <h2 className="text-lg font-medium text-gray-900 mb-4">Account Details</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Username</label>
+          <input 
+            type="text" 
+            className="w-full p-2 rounded bg-gray-200 text-black border" 
+            value="JohnDoe123" 
+            readOnly 
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Email Address</label>
+          <input 
+            type="email" 
+            className="w-full p-2 rounded bg-gray-200 text-black border" 
+            value="johndoe@example.com" 
+            readOnly 
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+          <input 
+            type="tel" 
+            className="w-full p-2 rounded bg-gray-200 text-black border" 
+            value="+1234567890" 
+            readOnly 
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Address</label>
+          <input 
+            type="text" 
+            className="w-full p-2 rounded bg-gray-200 text-black border" 
+            value="123 Main St, Springfield" 
+            readOnly 
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">City *</label>
+          <input type="text" className="w-full p-2 rounded bg-white text-black border" placeholder="Enter your city" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Country *</label>
+          <input type="text" className="w-full p-2 rounded bg-white text-black border" placeholder="Enter your country" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 function BillingInformation() {
   return (
@@ -94,21 +149,23 @@ function ChangePassword() {
   return (
     <div>
       <h2 className="text-lg font-medium text-gray-900 mb-4">Change Password</h2>
-      <div className='flex flex-col gap-y-4'>
+      <div className="flex flex-col gap-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Old Password *</label>
-          <input type="password" placeholder='Old Password' className="w-full p-2 rounded bg-white text-black border focus:outline-none focus:ring-2" />
+          <input type="password" placeholder="Old Password" className="w-full p-2 rounded bg-white text-black border focus:outline-none focus:ring-2" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">New Password *</label>
-          <input type="password" placeholder='New Password' className="w-full p-2 rounded bg-white text-black border focus:outline-none focus:ring-2" />
+          <input type="password" placeholder="New Password" className="w-full p-2 rounded bg-white text-black border focus:outline-none focus:ring-2" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Confirm Password *</label>
-          <input type="password" placeholder='Confirm Password' className="w-full p-2 rounded bg-white text-black border focus:outline-none focus:ring-2" />
+          <input type="password" placeholder="Confirm Password" className="w-full p-2 rounded bg-white text-black border focus:outline-none focus:ring-2" />
         </div>
       </div>
-      <button type="submit" className="w-1/2 md:w-auto mt-5 bg-blue-500 text-white px-3 py-2 rounded-lg">Save Password</button>
+      <button type="submit" className="w-1/2 md:w-auto mt-5 bg-blue-500 text-white px-3 py-2 rounded-lg">
+        Save Password
+      </button>
     </div>
   );
 }
@@ -130,7 +187,9 @@ function DeleteAccount() {
                   <p className="text-sm text-gray-500 leading-none mt-1">By deleting your account, you will lose all your data.</p>
                 </div>
               </div>
-              <button className="flex-no-shrink bg-red-500 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-red-500 text-white rounded">Delete</button>
+              <button className="flex-no-shrink bg-red-500 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-red-500 text-white rounded">
+                Delete
+              </button>
             </div>
           </div>
         </div>

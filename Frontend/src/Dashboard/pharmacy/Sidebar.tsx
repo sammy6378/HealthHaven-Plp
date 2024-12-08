@@ -56,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
               className="w-16"
               alt="logo image"
             />
-            <h3 className="text-2xl font-bold mt-4">HealthHaven</h3>
+            <h3 className="text-2xl font-bold mt-4">TeleMed</h3>
           </div>
           <h5 className="text-gray-500">Pharmacy</h5>
         </div>

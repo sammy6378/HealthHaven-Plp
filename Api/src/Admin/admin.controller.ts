@@ -1,8 +1,8 @@
 import { Context } from "hono";
 import { getAllController,getController,createController,deleteController,updateController } from "../generics/gen.controller";
-import { getadmins,getadmin,createadmin,deleteadmin,updateadmin,changePassword } from "./admin.service";
+import { getAdmins,getadmin,createadmin,deleteadmin,updateadmin,changePassword } from "./admin.service";
 
-export const getAlladmin = getAllController(getadmins)
+export const getAlladmin = getAllController(getAdmins)
 export const getadminById = getController(getadmin)
 export const createNewadmin = createController(createadmin)
 export const deleteadminById = deleteController(getadmin, deleteadmin)

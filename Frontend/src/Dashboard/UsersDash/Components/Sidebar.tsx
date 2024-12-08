@@ -34,9 +34,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         <div className=' border-b rounded-md flex justify-center shadow-lg cursor-pointer'>
           <img src='https://i.pinimg.com/564x/d4/90/9c/d4909cf3a4de812c4b39a63dcc41d48f.jpg' className='w-16' alt="logo image" />
-          <h3 className="text-2xl font-bold mt-4">HealthHaven Health</h3>
+          <h3 className="text-2xl font-bold mt-4">TeleMed Health</h3>
         </div>
 
+      
         <div className="flex items-center my-6">
           {/* Profile image container */}
           <div className="relative">

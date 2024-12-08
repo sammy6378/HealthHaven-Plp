@@ -1,7 +1,7 @@
 
 import { Context } from "hono";
 import { getEntity, createEntity, deleteEntity, updateEntity,searchEntity, getAllEntity } from "./gen.func";
-
+import mongoose from "mongoose";
 // Controller to get all entities
 export const getAllController = <T>(getFunction: () => Promise<T[]>) => async (c: Context) => {
     try {
@@ -17,9 +17,14 @@ export const getAllController = <T>(getFunction: () => Promise<T[]>) => async (c
 }
 
 // controller to get one entity
-export const getController = <T>(getFunction: (id: number) => Promise<T | undefined>) => async (c: Context) => {
-    const id = parseInt(c.req.param("id"));
-    if (isNaN(id)) return c.text("Invalid ID", 400);
+export const getController = <T>(getFunction: (id: mongoose.Types.ObjectId) => Promise<T | undefined>) => async (c: Context) => {
+    const idParam = c.req.param("id");
+  
+    if (!mongoose.Types.ObjectId.isValid(idParam)) {
+      return c.text("Invalid ID", 400);
+    }
+  
+    const id = new mongoose.Types.ObjectId(idParam);
 
     const entity = await getEntity(id, getFunction);
     if (entity === undefined) {
@@ -43,9 +48,14 @@ export const createController = <T>(createFunction: (data: T) => Promise<T>) => 
 }
 
 // delete controller
-export const deleteController = <T>(getFunction: (id: number) => Promise<T | undefined>, deleteFunction: (id: number) => Promise<boolean>) => async (c: Context) => {
-    const id = parseInt(c.req.param("id"));
-    if (isNaN(id)) return c.text("Invalid ID", 400);
+export const deleteController = <T>(getFunction: (id: mongoose.Types.ObjectId) => Promise<T | undefined>, deleteFunction: (id: mongoose.Types.ObjectId) => Promise<boolean>) => async (c: Context) => {
+    const idParam = c.req.param("id");
+  
+    if (!mongoose.Types.ObjectId.isValid(idParam)) {
+      return c.text("Invalid ID", 400);
+    }
+  
+    const id = new mongoose.Types.ObjectId(idParam);
     try {
         const entity = await getEntity(id, getFunction);
         if (entity === undefined) return c.text("Entity not found", 404);
@@ -60,9 +70,14 @@ export const deleteController = <T>(getFunction: (id: number) => Promise<T | und
 }
 
 // update controller
-export const updateController = <T>(getFunction: (id: number) => Promise<T | undefined>, updateFunction: (id: number, data: T) => Promise<T | undefined>) => async (c: Context) => {
-    const id = parseInt(c.req.param("id"));
-    if (isNaN(id)) return c.text("Invalid ID", 400);
+export const updateController = <T>(getFunction: (id: mongoose.Types.ObjectId) => Promise<T | undefined>, updateFunction: (id: mongoose.Types.ObjectId, data: T) => Promise<T | undefined>) => async (c: Context) => {
+    const idParam = c.req.param("id");
+  
+    if (!mongoose.Types.ObjectId.isValid(idParam)) {
+      return c.text("Invalid ID", 400);
+    }
+  
+    const id = new mongoose.Types.ObjectId(idParam);
 
     const data = await c.req.json();
 
@@ -80,13 +95,20 @@ export const updateController = <T>(getFunction: (id: number) => Promise<T | und
 }
 
 // search a controller
-export const searchController = <T>(getFunction: (id: number) => Promise<T | undefined>) => async (c: Context) => {
-    const id = parseInt(c.req.param("id"));
-    if (isNaN(id)) return c.text("Invalid ID", 400);
-
-    const entity = await searchEntity(id, getFunction);
-    if (entity === undefined) {
-        return c.text("Entity not found", 404);
+export const searchController = <T>(getFunction: (id: mongoose.Types.ObjectId) => Promise<T | undefined>) => async (c: Context) => {
+    
+    const idParam = c.req.param("id");
+  
+    if (!mongoose.Types.ObjectId.isValid(idParam)) {
+      return c.text("Invalid ID", 400);
     }
+  
+    const id = new mongoose.Types.ObjectId(idParam);
+    const entity = await searchEntity(id, getFunction);
+  
+    if (!entity) {
+      return c.text("Entity not found", 404);
+    }
+  
     return c.json(entity, 200);
-}
+  };

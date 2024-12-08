@@ -1,22 +1,21 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../../forms/Auth/UserSlice';
+import { logout } from '../../../forms/Auth/UsersSlice';
 import { useNavigate } from 'react-router-dom';
 import ConfirmLogout from './ConfirmLogout';
 import { RootState } from '../../../store/Store';
 import { useSelector } from 'react-redux';
 import { TAuthResponse } from '../../../services/service';
-import { clearAdmin } from '../../../forms/Auth/AdminSlice';
 import React from 'react';
 
 export function useConfirmLogout() {
   const userAuthState = useSelector((state: RootState) => state.auth);
-  const adminAuthState = useSelector((state: RootState) => state.adminAuth);
+  
 
-  const user = userAuthState.patient as TAuthResponse | null;
-  const admin = adminAuthState.admin as TAuthResponse | null;
+  const user = userAuthState.user as TAuthResponse | null;
+  
 
-  const role = user?.role || admin?.role || '';
+  const role = user?.role ||  '';
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -27,14 +26,20 @@ export function useConfirmLogout() {
   const closeModal = () => setIsOpen(false);
 
   const handleConfirmLogout = () => {
-    if(role === 'admin') {
-        dispatch(clearAdmin())
-        closeModal();
-        navigate('/login');
-    }else if(role === 'user'){
+    if(role === 'user'){
         dispatch(logout());
         closeModal();
         navigate('/login');
+    }else if (role === 'doctor'){
+      dispatch(logout());
+      closeModal();
+      navigate('/login');
+    }else if (role === 'admin'){
+      dispatch(logout());
+      closeModal();
+      navigate('/login');
+    }else{
+      console.error("Invalid role. Cannot log out.");
     }
     
   };

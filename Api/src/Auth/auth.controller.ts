@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import "dotenv/config" 
 import{sign} from "hono/jwt"
 import { User } from "./auth.service";
-import { main, reset } from "../mailer/email";
+import { main } from "../mailer/email";
 
 
 export const register = async (c: Context) => {
@@ -47,38 +47,13 @@ export const register = async (c: Context) => {
             return c.json({ error: `${role.charAt(0).toUpperCase() + role.slice(1)} not created` }, 404);
         }
 
-        // Generate a reset link
-        const secret = process.env.JWT_SECRET as string;
-        const payload = {
-            email,
-            first_name,
-            exp: Math.floor(Date.now() / 1000) + (60 * 180), 
-        };
-
-        const token = await sign(payload, secret); // Token expires in 3 hours
-        const resetLink = `${process.env.FRONTEND_URL}/change-password?token=${token}&email=${email}`;
-
-        // Send the email with the unhashed password and reset link
-        const mailContent = {
-            email: email.trim(),
-            username: first_name,
-            temporaryPassword: password, // Keep this unhashed for the user
-            resetLink,
-        };
-        
-        await main({ email: mailContent.email, username: mailContent.username });
-        await reset(mailContent.email, mailContent.resetLink, mailContent.temporaryPassword);
-
+        await main({ email:email, username: first_name });
 
         return c.json({ msg: `${role.charAt(0).toUpperCase() + role.slice(1)} created successfully. Email sent.` }, 200);
     } catch (error: any) {
         return c.json({ error: error.message }, 400);
     }
 };
-
-
-
-
 
 
 // Login Service (Handles Admin, Patient, and Doctor)
@@ -94,8 +69,6 @@ export const login = async (c: Context) => {
         // Try to authenticate as admin first
         let user = await authAdminLoginService(email);
 
-       
-        
         if (!user) {
             // If not admin, try to authenticate as patient
             user = await authLoginService(email);

@@ -1,56 +1,55 @@
 
 
-import { eq } from "drizzle-orm"
-import db from "../drizzle/db"
-import { admins } from "../drizzle/schema"
+import { Admin } from "../models/schema";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 
 // get all admin
-export const getadmins = async ( )=>{
-    return await db.query.admins.findMany()
+export const getAdmins = async ( )=>{
+    return await Admin.find()
 }
 
 // get admin by id
-export const getadmin = async ( id:number)=>{
-    return await db.query.admins.findFirst({
-    where:eq(admins.admin_id,id)
-})
+export const getadmin = async ( id:mongoose.Types.ObjectId)=>{
+    return await Admin.findById(id)
 }
 
 // create admin
 export const createadmin = async (res:any)=>{
-    await db.insert(admins).values(res)
-    return "admin created successfully"
+  const newAdmin = new Admin(res);
+  await newAdmin.save();
+  return "admin created successfully"
 }
 
 // delete admin
-export const deleteadmin = async (id:number):Promise<boolean>=>{
-    await db.delete(admins).where(eq(admins.admin_id,id))
-    return true
+export const deleteadmin = async (id:mongoose.Types.ObjectId):Promise<boolean>=>{
+  const result = await Admin.findByIdAndDelete(id);
+  return !!result;
 }
 
 // update admin
-export const updateadmin = async (id:number, res:any): Promise<string | undefined>=>{
-    await db.update(admins).set(res).where(eq(admins.admin_id,id))
-    return "admin updated successfully"
+export const updateadmin = async (id:mongoose.Types.ObjectId, res:any): Promise<string | undefined>=>{
+  const updateAdmin = await Admin.findByIdAndUpdate(id, res, { new: true });
+    return updateAdmin ? "Admin updated successfully" : undefined;
 }
 
 
 
 // Change password logic
+// Change password logic
 export const changePassword = async (
-  id: number,
+  id: mongoose.Types.ObjectId,
   password: string,
   newPassword: string
 ): Promise<{ error?: string; message?: string }> => {
-  const data = await getadmin(id);
+  const admin = await Admin.findById(id);
 
-  if (!data) {
+  if (!admin) {
     return { error: "Admin not found" };
   }
 
   // Compare existing password with the hashed password in the database
-  const isPasswordCorrect = await bcrypt.compare(password, data.password);
+  const isPasswordCorrect = await bcrypt.compare(password, admin.password);
 
   if (!isPasswordCorrect) {
     return { error: "Incorrect password" };
@@ -58,8 +57,8 @@ export const changePassword = async (
 
   // Hash the new password before updating
   const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-  await db.update(admins).set({ password: hashedNewPassword }).where(eq(admins.admin_id, id));
+  admin.password = hashedNewPassword;
+  await admin.save();
 
   return { message: "Password changed successfully" };
 };

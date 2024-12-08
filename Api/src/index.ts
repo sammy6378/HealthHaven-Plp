@@ -1,19 +1,22 @@
 
-import { Hono } from "hono";
 import 'dotenv/config'
+import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { cors } from 'hono/cors'
-import { doctorRouter } from "./doctors/doctors.router";
+import { doctorRouter } from './doctors/doctors.router';
+import { appointmentRouter } from './appointments/appointment.router';
+import { patientRouter } from './patients/patient.router';
+import { adminRouter } from './Admin/admin.router';
 import authRouters from "./Auth/auth.router";
-import { patientRouter } from "./patients/patient.router";
-import { appointmentRouter } from "./appointments/appointment.router";
-import { adminRouter } from "./Admin/admin.router";
+import { httpServer } from "./socket/server";
+import db from './db/connect';
+import migrateData from './db/migrate';
 
 
 const app = new Hono();
 
 const allowedOrigin = process.env.NODE_ENV === 'production'
-  ? 'https://health-haven-plp-front.vercel.app' // Deployed frontend URL
+  ? 'https://health-haven-plp-front.vercel.app/' // Deployed frontend URL
   : 'http://localhost:5173'; // Local development URL
 
 app.use('*', cors({
@@ -26,6 +29,7 @@ app.use('*', cors({
 
 
 // app.use('*', cors())
+
 
 
 // server
@@ -41,11 +45,24 @@ serve({
     port: Number(process.env.PORT)
   })
 
+  // migrateData()
+
+db.on('error', (err) => console.error(err));
+db.once('open', () => console.log('Connected to MongoDB'));
+
 
 
 // routers
+
 app.route('/api',doctorRouter)
 app.route('/api',appointmentRouter)
 app.route('/api',patientRouter)
 app.route('/api', adminRouter)
 app.route('/auth',authRouters)
+
+
+
+// Use the HTTP server from server.js to serve both Hono and WebSocket
+// httpServer.listen(port, () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });

@@ -1,7 +1,11 @@
+
 import React from 'react';
-import { Badge } from 'rsuite';
-import Calendar from 'rsuite/Calendar';
-import 'rsuite/Calendar/styles/index.css';
+import Badge from '@mui/material/Badge';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface Appointment {
   date: string;
@@ -9,51 +13,54 @@ interface Appointment {
   time: string;
 }
 
-const BasicDateCalendar = ({ appointments = [] as Appointment[], onDateClick }) => {
+interface BasicDateCalendarProps {
+  appointments?: Appointment[];
+  onDateClick?: (date: Dayjs) => void;
+}
 
+function CustomDay(
+  props: PickersDayProps<Dayjs> & { appointmentsOnDay?: Appointment[] }
+) {
+  const { appointmentsOnDay = [], day, outsideCurrentMonth, ...other } = props;
 
-  const getTodoList = (date) => {
-    if (!date || !Array.isArray(appointments)) {
-      console.error('Invalid date or appointments array');
-      return [];
-    }
+  const hasAppointments = appointmentsOnDay.length > 0;
 
-    const formattedDate = date.toISOString().split('T')[0];
+  return (
+    <Badge
+      overlap="circular"
+      badgeContent={hasAppointments ? appointmentsOnDay.length : undefined}
+      className='z-10'
+      color="primary"
+    >
+      <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+    </Badge>
+  );
+}
+
+const BasicDateCalendar: React.FC<BasicDateCalendarProps> = ({ appointments = [], onDateClick }) => {
+  const getAppointmentsForDay = (date: Dayjs) => {
+    const formattedDate = date.format('YYYY-MM-DD');
     return appointments.filter(event => event.date === formattedDate);
   };
 
-  const renderCell = (date) => {
-    const list = getTodoList(date);
-  
-    if (list.length) {
-      return (
-        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-          <Badge
-            // className="calendar-todo-item-badge"
-            style={{
-              position: 'absolute',
-              top: '5px',
-              right: '5px',
-              backgroundColor: 'red',
-              borderRadius: '50%',
-              padding: '4px 4px',
-            }}
-          >
-          </Badge>
-        </div>
-      );
-    }
-    return null;
-  };
-  
-
   return (
-    <Calendar 
-      compact 
-      renderCell={renderCell} 
-      onSelect={onDateClick} 
-      style={{ width: 320,position: 'relative' }}
-    />
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateCalendar
+        onChange={(date) => {
+          if (date && onDateClick) {
+            onDateClick(date);
+          }
+        }}
+        slots={{
+          day: (props) => (
+            <CustomDay
+              {...props}
+              appointmentsOnDay={getAppointmentsForDay(props.day)}
+            />
+          ),
+        }}
+      />
+    </LocalizationProvider>
   );
 };
 

@@ -6,7 +6,7 @@ function Nav() {
 
   return (
     <nav className="section__container nav__container">
-    <div className="nav__logo">Health<span>Haven</span> Healthcare</div>
+    <div className="nav__logo">Ha<span>Rar</span> Healthcare</div>
     <ul className="nav__links">
       <li className="link">
         <button className="btn_home combined-btn">

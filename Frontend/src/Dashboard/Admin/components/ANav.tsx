@@ -10,7 +10,7 @@ function ANav({ unreadCount }: { unreadCount: number }) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   // Retrieve user data from the store
-  const user = useSelector((state: RootState) => state.adminAuth.admin);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   // Safely get first and last name
   const { first_name, last_name } = user || { first_name: '', last_name: '' };

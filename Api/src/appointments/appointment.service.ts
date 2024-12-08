@@ -1,36 +1,35 @@
 
-import { eq } from "drizzle-orm"
-import db from "../drizzle/db"
-import { appointments } from "../drizzle/schema"
+import { Appointment } from "../models/schema"
+import mongoose from "mongoose"
 
 // create new appointment
 
-// get all appointments
-export const getappointments = async ( )=>{
-    return await db.query.appointments.findMany()
+// get all Appointment
+export const getAppointments = async ( )=>{
+    return await Appointment.find()
 }
 
 // get appointment by id
-export const getappointment = async ( id:number)=>{
-    return await db.query.appointments.findFirst({
-    where:eq(appointments.appointment_id,id)
-})
+export const getappointment = async ( id:mongoose.Types.ObjectId)=>{
+    return await Appointment.findById(id)
 }
 
 // create appointment
 export const createappointment = async (res:any)=>{
-    await db.insert(appointments).values(res)
+    const newAppointment = new Appointment(res);
+    await newAppointment.save()
+    
     return "appointment created successfully"
 }
 
 // delete appointment
-export const deleteappointment = async (id:number):Promise<boolean>=>{
-    await db.delete(appointments).where(eq(appointments.appointment_id,id))
-    return true
+export const deleteappointment = async (id:mongoose.Types.ObjectId):Promise<boolean>=>{
+    const result = await Appointment.findByIdAndDelete(id);
+    return !!result;
 }
 
 // update appointment
-export const updateappointment = async (id:number, res:any): Promise<string | undefined>=>{
-    await db.update(appointments).set(res).where(eq(appointments.appointment_id,id))
-    return "appointment updated successfully"
+export const updateappointment = async (id:mongoose.Types.ObjectId, res:any): Promise<string | undefined>=>{
+    const updateappointment = await Appointment.findByIdAndUpdate(id, res, { new: true });
+    return updateappointment ? "appointment  updated successfully" : undefined;
 }

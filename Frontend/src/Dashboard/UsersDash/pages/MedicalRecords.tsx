@@ -40,6 +40,8 @@ const MedicalRecordsPage = () => {
     <div className="min-h-screen pt-5 flex items-start justify-center">
       <div className="max-w-4xl w-full p-4">
         <h2 className="text-3xl font-bold text-blue-800 mb-6">My Medical Records</h2>
+
+        <div className="flex-1 overflow-y-auto">
         <div className="overflow-x-auto rounded-lg shadow-lg">
           <table className="min-w-full bg-white">
             <thead>
@@ -55,12 +57,12 @@ const MedicalRecordsPage = () => {
             <tbody>
               {currentRecords.map(record => (
                 <tr key={record.record_id} onClick={() => handleRowClick(record)} className="hover:bg-blue-50 transition duration-150">
-                  <td className=" whitespace-no-wrap p-4">{record.record_id}</td>
-                  <td className=" whitespace-no-wrap p-4">{record.patient_name}</td>
-                  <td className=" whitespace-no-wrap p-4">{record.condition}</td>
-                  <td className=" whitespace-no-wrap p-4">{record.date_of_visit}</td>
-                  <td className=" whitespace-no-wrap p-4">{record.doctor}</td>
-                  <td className=" whitespace-no-wrap p-4">
+                  <td className="whitespace-nowrap  p-4">{record.record_id}</td>
+                  <td className=" whitespace-nowrap p-4">{record.patient_name}</td>
+                  <td className=" whitespace-nowrap p-4">{record.condition}</td>
+                  <td className=" whitespace-nowrap p-4">{record.date_of_visit}</td>
+                  <td className="whitespace-nowrap  p-4">{record.doctor}</td>
+                  <td className="whitespace-nowrap  p-4">
                     <button
                       onClick={(e) => {
                         e.stopPropagation(); // Prevents triggering row click
@@ -77,6 +79,7 @@ const MedicalRecordsPage = () => {
               ))}
             </tbody>
           </table>
+        </div>
         </div>
 
         {/* Pagination Controls */}
@@ -110,6 +113,7 @@ const MedicalRecordsPage = () => {
           </div>
         )}
       </div>
+   
     </div>
   );
 };

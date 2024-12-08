@@ -1,47 +1,63 @@
-
 // profile services
-import { eq } from "drizzle-orm"
-import db from "../drizzle/db"
-import { profile } from "../drizzle/schema"
+import mongoose from "mongoose";
+import { Profile } from "../models/schema";
 
+// Get all profiles
+export const getProfiles = async () => {
+    try {
+        return await Profile.find();
+    } catch (error: any) {
+        throw new Error(`Failed to retrieve profiles: ${error.message}`);
+    }
+};
 
-// get all profiles
+// Get profile by ID
+export const getProfileById = async (id: mongoose.Types.ObjectId) => {
+    try {
+        const profile = await Profile.findById(id).populate({
+            path: "user",
+            select: "full_name email contact_phone",
+        });
 
-export const getProfiles = async ( )=>{
-    return await db.query.profile.findMany()
-}
-
-// get profile by id
-export const getProfileById = async (id:number) =>[
-    await db.query.profile.findFirst({
-        where:eq(profile.profile_id,id),
-        with:{
-            user:{
-                columns:{
-                    full_name:true,
-                    email:true,
-                    contact_phone:true,
-                }
-            }
+        if (!profile) {
+            throw new Error("Profile not found");
         }
+        return profile;
+    } catch (error:any) {
+        throw new Error(`Failed to retrieve profile: ${error.message}`);
+    }
+};
 
-    })
-]
+// Create profile
+export const createProfile = async (res: any): Promise<string> => {
+    try {
+        const newProfile = new Profile(res);
+        await newProfile.save();
+        return "Profile created successfully";
+    } catch (error:any) {
+        throw new Error(`Failed to create profile: ${error.message}`);
+    }
+};
 
-// create profile
-export const createProfile = async (res:any):Promise<string> => {
-    await db.insert(profile).values(res)
-    return 'Profile created successfully';
-}
+// Update profile
+export const updateProfile = async (id: mongoose.Types.ObjectId, res: any): Promise<string | undefined> => {
+    try {
+        const updatedProfile = await Profile.findByIdAndUpdate(id, res, { new: true });
+        if (!updatedProfile) {
+            throw new Error("Profile not found");
+        }
+        return "Profile updated successfully";
+    } catch (error:any) {
+        throw new Error(`Failed to update profile: ${error.message}`);
+    }
+};
 
-// update profile
-export const updateProfile = async (id:number, res:any):Promise<string | undefined> => {
-    await db.update(profile).set(res).where(eq(profile.profile_id,id))
-    return "profile updated successfully"
-}
-
-// delete profile
-export const deleteProfile = async (id:number):Promise<boolean> => {
-    await db.delete(profile).where(eq(profile.profile_id,id))
-    return true
-}
+// Delete profile
+export const deleteProfile = async (id: mongoose.Types.ObjectId): Promise<boolean> => {
+    try {
+        const result = await Profile.findByIdAndDelete(id);
+        return !!result;
+    } catch (error:any) {
+        throw new Error(`Failed to delete profile: ${error.message}`);
+    }
+};

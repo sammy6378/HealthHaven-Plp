@@ -21,7 +21,7 @@ export const toggleDoctorStatus = async(c:Context) =>{
             return c.json({ error: "Missing required field: id" }, 400);
         }
         
-        const result = await toggleDoctor(Number(id)); // Toggle status for the given doctor ID
+        const result = await toggleDoctor(id); // Toggle status for the given doctor ID
         
         if (result === "Doctor not found") {
             return c.json({ error: result }, 404);

@@ -1,16 +1,16 @@
 import { Context } from "hono";
 import { getAllController,getController,createController,deleteController,updateController } from "../generics/gen.controller";
-import { getpatients,getpatient,createPatient,deletePatient,updatePatient } from "./patient.service";
+import { getPatients,getPatientById,createPatient,deletePatient,updatePatient } from "./patient.service";
 import { toggleStatus } from "./patient.service";
 
 
 
 
-export const getAllPatient = getAllController(getpatients)
-export const getPatientById = getController(getpatient)
+export const getAllPatient = getAllController(getPatients)
+export const getPatient = getController(getPatientById)
 export const createNewPatient = createController(createPatient)
-export const deletePatientById = deleteController(getpatient, deletePatient)
-export const updatePatientN = updateController(getpatient,updatePatient)
+export const deletePatientById = deleteController(getPatientById, deletePatient)
+export const updatePatientN = updateController(getPatientById,updatePatient)
 
 
 // toggle patient status
@@ -24,7 +24,7 @@ export const togglePatientStatus = async (c: Context) => {
             return c.json({ error: "Missing required field: id" }, 400);
         }
 
-        const result = await toggleStatus(Number(id)); // Toggle status for the given patient ID
+        const result = await toggleStatus(id); // Toggle status for the given patient ID
 
         if (result === "Patient not found") {
             return c.json({ error: result }, 404);

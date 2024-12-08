@@ -14,7 +14,7 @@ const Dash = ({ children }: { children: React.ReactNode }) =>{
       {/* Sidebar: Fixed height */}
       <Sidebar  isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-y-auto">
         {/* Navigation Bar at the Top */}
         <Nav toggleSidebar={toggleSidebar} />
     

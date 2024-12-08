@@ -65,8 +65,8 @@ export type TProfile = {
 }
 
 
-export type TAdmin = {
-    admin_id: number;
+export type TLogin = {
+    _id: number;
     first_name: string;
     last_name: string;
     email: string;
@@ -96,19 +96,20 @@ export const authService =createApi({
 reducerPath: 'authApi',
 baseQuery:fetchBaseQuery({
     baseUrl:'https://health-haven-plp.vercel.app',
-        prepareHeaders: (headers, { getState }) => {
-        // Retrieve both tokens from the Redux store
-        const authToken = (getState() as RootState).auth.token;
-        const adminToken = (getState() as RootState).adminAuth.token;
-  
+    prepareHeaders: (headers, { getState }) => {
+        const state = getState() as RootState;
+      
+        const authToken = state.auth.token;
+      
+      
         // Determine which token to use, priority is given to admin token
-        const token = adminToken || authToken;
-  
+        const token = authToken;
+      
         // If a token exists, set it in the Authorization header
         if (token) {
           headers.set('Authorization', `Bearer ${token}`);
         }
-  
+      
         return headers;
       },
 }),

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { ArrowLeft } from 'lucide-react';
 import { RootState } from "../../../store/Store";
-import { logout } from "../../../forms/Auth/UserSlice";
-import { clearAdmin } from "../../../forms/Auth/AdminSlice";
+import { logout } from "../../../forms/Auth/UsersSlice";
+
 
 function Error() {
     const dispatch = useDispatch();
@@ -12,11 +12,10 @@ function Error() {
     const error: { statusText?: string, message?: string } = useRouteError() as { statusText?: string, message?: string };
 
     const { isAuthenticated: isUserAuthenticated } = useSelector((state: RootState) => state.auth);
-    const { isAuthenticated: isAdminAuthenticated } = useSelector((state: RootState) => state.adminAuth);
+    
 
     const handleLogout = () => {
         dispatch(logout());
-        dispatch(clearAdmin());
         navigate('/login');
     };
 
@@ -49,7 +48,7 @@ function Error() {
                     <Link to="/contact-us" className="rounded-md btn btn-primary btn-sm text-sm font-semibold">
                         Contact us
                     </Link>
-                    {isUserAuthenticated || isAdminAuthenticated ? (
+                    {isUserAuthenticated  ? (
                         <button
                             onClick={handleLogout}
                             className="rounded-md btn btn-warning btn-sm text-sm font-semibold"

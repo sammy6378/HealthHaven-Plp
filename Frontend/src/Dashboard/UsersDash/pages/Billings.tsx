@@ -29,9 +29,16 @@ const BillingPage = () => {
   // Initialize billings state with dummy data
   const [billings, setBillings] = useState(dummyBillings);
 
-  // Function to review a booking (for now, it does nothing)
-  const reviewBooking = (id) => {
-    console.log(`Reviewing booking with ID: ${id}`);
+  // Function to delete a booking
+  const deleteBooking = (id) => {
+    setBillings(billings.filter(billing => billing.booking_id !== id));
+    console.log(`Deleted booking with ID: ${id}`);
+  };
+
+  // Function to archive a booking
+  const archiveBooking = (id) => {
+    console.log(`Archived booking with ID: ${id}`);
+    // Archive logic can be added here
   };
 
   return (
@@ -44,29 +51,35 @@ const BillingPage = () => {
               <tr className="bg-blue-100 text-gray-700">
                 <th className="p-4 text-left">Transaction ID</th>
                 <th className="p-4 text-left">Patient</th>
-                <th className="p-4 text-left">Amount</th>
+                <th className="p-4 text-left">Amount (KSH)</th>
                 <th className="p-4 text-left">Date</th>
                 <th className="p-4 text-left">Status</th>
-                <th className="p-4 text-left">Action</th>
+                <th className="p-4 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
               {billings.map(billing => (
                 <tr key={billing.booking_id} className="hover:bg-blue-50 transition duration-150 cursor-pointer">
-                  <td className="whitespace-no-wrap p-4">{billing.booking_id}</td>
-                  <td className="whitespace-no-wrap p-4">{billing.user_name}</td>
-                  <td className="whitespace-no-wrap p-4">{billing.total_amount}</td>
-                  <td className="whitespace-no-wrap p-4">{billing.booking_date}</td>
-                  <td className="whitespace-no-wrap p-4">{billing.booking_status}</td>
-                  <td className="whitespace-no-wrap p-4">
-                    {billing.booking_status === 'pending' && (
+                  <td className="whitespace-nowrap p-4">{billing.booking_id}</td>
+                  <td className="whitespace-nowrap p-4">{billing.user_name}</td>
+                  <td className="whitespace-nowrap p-4">{`KSH ${billing.total_amount.toLocaleString()}`}</td>
+                  <td className="whitespace-nowrap p-4">{billing.booking_date}</td>
+                  <td className="whitespace-nowrap p-4">{billing.booking_status}</td>
+                  <td className="whitespace-nowrap p-4">
+                    <div className="flex space-x-2">
                       <button
-                        onClick={() => reviewBooking(billing.booking_id)}
-                        className="bg-blue-500 text-white px-3 py-2 rounded-lg"
+                        onClick={() => deleteBooking(billing.booking_id)}
+                        className="bg-red-500 text-white px-3 py-2 rounded-lg"
                       >
-                        Review
+                        Delete
                       </button>
-                    )}
+                      <button
+                        onClick={() => archiveBooking(billing.booking_id)}
+                        className="bg-yellow-500 text-white px-3 py-2 rounded-lg"
+                      >
+                        Archive
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

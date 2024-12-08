@@ -35,7 +35,7 @@ const Nav = ({ toggleSidebar }) => {
           <FaBars size={24} />
         </button>
 
-        <h2 className='text-2xl font-bold text-white'>
+        <h2 className='hidden lg:flex text-2xl font-bold text-white'>
           Welcome, {first_name}!
         </h2>
 

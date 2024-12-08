@@ -1,23 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLoginUserMutation } from "../services/service";
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from "./Auth/UserSlice";
-import { setAdmin } from "./Auth/AdminSlice";
+import { login } from "./Auth/UsersSlice";
 import { useDispatch } from "react-redux";
 import { PulseLoader } from "react-spinners";
 import { Toaster,toast } from "sonner";
 import { FaEye,FaEyeSlash } from "react-icons/fa";
 import React from "react";
-import { gapi } from 'gapi-script';
-import GoogleLogins from "./component/googleLogin";
-
-const clientId = '403625918155-rk4ftcc0qbvfjhelvu3oomqe4rec1ik2.apps.googleusercontent.com';
 
 
-
-
-type formData = {
+export type formData = {
     email: string;
     password: string;
 }
@@ -32,59 +25,37 @@ function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     function start() {
-    //         if (gapi && gapi.client) {
-    //             gapi.client.init({
-    //                 clientId: clientId,
-    //                 scope: "",
-    //             }).then(() => {
-    //                 // Handle successful initialization
-    //             }).catch((error) => {
-    //                 console.error("Error initializing gapi client:", error);
-    //             });
-    //         } else {
-    //             console.error("gapi or gapi.client is not defined");
-    //         }
-    //     }
-
-    //     gapi.load('auth2', start);
-    // }, [])
- 
     const onSubmit = async (data: formData) => {
         setLoading(true);
-
-   
-      
-        try {
-            const response = await userLogin(data).unwrap()
-            
-            
-            const { token,id, first_name, role,last_name } = response;
-         
-            if (role && typeof role === 'string') {
-                if (role.includes('admin')) {
-                    dispatch(setAdmin({ token, first_name,last_name, role }));
-                    navigate('/admin-dashboard');
-                } else if (role.includes('user')) {
-                    dispatch(login({ token,id, first_name,last_name, role }));
-                    navigate('/user-dashboard');
+        try{
+            const response = await userLogin(data).unwrap();
+                const { token, id, first_name, role, last_name } = response;
+        
+                if (role && typeof role === 'string') {
+                    if (role.includes('admin')) {
+                        dispatch(login({ token, first_name, last_name, role }));
+                        navigate('/admin-dashboard');
+                    } else if (role.includes('doctor')) {
+                        dispatch(login({ token, id, first_name, last_name, role }));
+                        navigate('/doctor-dashboard');
+                    } else if (role.includes('user')) {
+                        dispatch(login({ token, id, first_name, last_name, role }));
+                        navigate('/user-dashboard');
+                    } else {
+                        setErrorMessage("You do not have the required privileges.");
+                        toast.error('You do not have the required privileges');
+                    }
                 } else {
-                    setErrorMessage("You do not have the required privileges.");
-                    toast.error('You do not have the required privileges');
+                    setErrorMessage("Invalid role.");
+                    toast.error("Invalid role");
                 }
-            } else {
-                setErrorMessage("Invalid role.");
-                toast.error("Invalid role");
+            } catch (error) {
+                setErrorMessage("Invalid email or password.");
+                toast.error("Invalid email or password");
+            } finally {
+                setLoading(false);
             }
-        } catch (error) {
-            setErrorMessage("Invalid email or password.");
-            toast.error("Invalid email or password");
-        } finally {
-            setLoading(false);
         }
-    };
-    
 
     return (
         <>
