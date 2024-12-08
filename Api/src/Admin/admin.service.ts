@@ -6,12 +6,12 @@ import mongoose from "mongoose";
 
 // get all admin
 export const getAdmins = async ( )=>{
-    return await Admin.find()
+    return await Admin.find().select('-password');
 }
 
 // get admin by id
 export const getadmin = async ( id:mongoose.Types.ObjectId)=>{
-    return await Admin.findById(id)
+    return await Admin.findById(id).select('-password');
 }
 
 // create admin

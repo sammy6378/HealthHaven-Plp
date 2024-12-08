@@ -33,8 +33,6 @@ const ProfilePage = () => {
     if (patients) {
       const userPatientData = patients.find((patient) => patient.id === loggedInUserId);
 
-      console.log(userPatientData)
-
       if (userPatientData) {
         setFormData((prev) => ({
           ...prev,

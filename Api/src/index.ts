@@ -7,6 +7,7 @@ import { doctorRouter } from './doctors/doctors.router';
 import { appointmentRouter } from './appointments/appointment.router';
 import { patientRouter } from './patients/patient.router';
 import { adminRouter } from './Admin/admin.router';
+import { profileRoutes } from './profile/profile.router';
 import authRouters from "./Auth/auth.router";
 import { httpServer } from "./socket/server";
 import db from './db/connect';
@@ -59,6 +60,7 @@ app.route('/api',appointmentRouter)
 app.route('/api',patientRouter)
 app.route('/api', adminRouter)
 app.route('/auth',authRouters)
+app.route('/api', profileRoutes)
 
 
 

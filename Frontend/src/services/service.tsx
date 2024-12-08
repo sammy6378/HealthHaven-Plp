@@ -100,13 +100,10 @@ baseQuery:fetchBaseQuery({
         const state = getState() as RootState;
       
         const authToken = state.auth.token;
-    
-        // Determine which token to use, priority is given to admin token
-        const token = authToken;
-      
+
         // If a token exists, set it in the Authorization header
-        if (token) {
-          headers.set('Authorization', `Bearer ${token}`);
+        if (authToken) {
+          headers.set('Authorization', `Bearer ${authToken}`);
         }
       
         return headers;

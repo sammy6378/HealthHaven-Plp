@@ -10,12 +10,12 @@ import bcrypt from "bcrypt";
 
 // get all Doctor
 export const getdoctors = async ( )=>{
-    return await Doctor.find()
+    return await Doctor.find().select('-password');
 }
 
 // get doctor by id
 export const getdoctor = async ( id:mongoose.Types.ObjectId)=>{
-    return await Doctor.findById(id)
+    return await Doctor.findById(id).select('-password');
 }
 
 // create doctor

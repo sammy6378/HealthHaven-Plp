@@ -4,14 +4,14 @@ import { zValidator } from '@hono/zod-validator'
 
 import { Hono } from 'hono'
 import { registerPatientSchema } from '../validators'
-import { adminRoleAuth } from '../middleware/auth'
+import { adminRoleAuth, bothAuth } from '../middleware/auth'
 import { togglePatientStatus } from './patient.controller'
 
 
 
 export const patientRouter = new Hono()
 
-patientRouter.get('/patients',adminRoleAuth,  getAllPatient)
+patientRouter.get('/patients',bothAuth,  getAllPatient)
 patientRouter.get('/patient/:id', getPatient)
 patientRouter.post('/create-patient',zValidator('json', registerPatientSchema, (result, c) => {
     if (!result.success) {
