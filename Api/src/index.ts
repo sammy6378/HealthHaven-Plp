@@ -3,7 +3,11 @@ import { Hono } from "hono";
 import 'dotenv/config'
 import { serve } from "@hono/node-server";
 import { cors } from 'hono/cors'
-
+import { doctorRouter } from "./doctors/doctors.router";
+import authRouters from "./Auth/auth.router";
+import { patientRouter } from "./patients/patient.router";
+import { appointmentRouter } from "./appointments/appointment.router";
+import { adminRouter } from "./Admin/admin.router";
 
 
 const app = new Hono();
@@ -40,3 +44,8 @@ serve({
 
 
 // routers
+app.route('/api',doctorRouter)
+app.route('/api',appointmentRouter)
+app.route('/api',patientRouter)
+app.route('/api', adminRouter)
+app.route('/auth',authRouters)
