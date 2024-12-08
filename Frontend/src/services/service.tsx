@@ -95,7 +95,7 @@ export type TAdminPassword = {
 export const authService =createApi({
 reducerPath: 'authApi',
 baseQuery:fetchBaseQuery({
-    baseUrl:'https://tel-med-application.vercel.app',
+    baseUrl:'https://health-haven-plp.vercel.app',
         prepareHeaders: (headers, { getState }) => {
         // Retrieve both tokens from the Redux store
         const authToken = (getState() as RootState).auth.token;
