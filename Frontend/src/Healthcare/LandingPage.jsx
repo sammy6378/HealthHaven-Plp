@@ -9,7 +9,7 @@ function LandingPage() {
     <div>
       <header className="appointment">
       <nav className="section__container nav__container">
-        <div className="nav__logo">Ha<span>Rar</span> Healthcare</div>
+        <div className="nav__logo">Health<span>Haven</span> Healthcare</div>
         {/* <img src="./harar.png" alt="" /> */}
         <ul className="nav__links">
           <li className="link"><a href="#home">Home</a></li>
@@ -300,13 +300,13 @@ function LandingPage() {
       <p>
         <i className="ri-map-pin-2-fill"></i> 0340,Kerugoya, Kirinyaga
       </p>
-      <p><i className="ri-mail-fill"></i> support@Harar.com</p>
+      <p><i className="ri-mail-fill"></i> support@Haven.com</p>
       <p><i className="ri-phone-fill"></i> (+254) 3456 789</p>
     </div>
   </div>
   <div className="footer__bar">
     <div className="footer__bar__content">
-      <p>Copyright © 2024 Harar HealthCare. All rights reserved.</p>
+      <p>Copyright © 2024 HealthHaven HealthCare. All rights reserved.</p>
       <div className="footer__socials">
         <span><i className="ri-instagram-line"></i></span>
         <span><i className="ri-facebook-fill"></i></span>

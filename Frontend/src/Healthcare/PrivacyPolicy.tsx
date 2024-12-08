@@ -4,7 +4,7 @@ import React from 'react';
 const PrivacyPolicy: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 m-4 bg-white shadow-md rounded-lg">
-      <h1 className="text-3xl font-bold mb-6 text-center">Privacy Policy for Harar Healthcare Hospital</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Privacy Policy for HealthHaven Healthcare Hospital</h1>
       
       <section className="mb-6">
         <h2 className="text-2xl font-semibold border-b-2 border-gray-300 pb-2 mb-2">Introduction</h2>
@@ -125,7 +125,7 @@ const PrivacyPolicy: React.FC = () => {
         <h2 className="text-2xl font-semibold border-b-2 border-gray-300 pb-2 mb-2">Contact Us</h2>
         <p>
           By using our services, you acknowledge that you have read, understood, and agreed to the terms of this Privacy Policy. If you have any questions or concerns, please contact our Privacy Officer at 
-            <a href="support@Harar.com." className='ml-2 text-blue-500'>support@Harar.com</a>
+            <a href="support@Harar.com." className='ml-2 text-blue-500'>support@Haven.com</a>
         </p>
       </section>
     </div>
