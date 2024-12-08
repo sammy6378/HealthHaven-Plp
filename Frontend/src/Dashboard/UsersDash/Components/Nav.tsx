@@ -11,7 +11,7 @@ import NotificationPanel from '../pages/Notifications';
 const Nav = ({ toggleSidebar }) => {
   const { openModal, ConfirmLogoutModal } = useConfirmLogout();
   const authState = useSelector((state: RootState) => state.auth);
-  const user = authState.patient as TAuthResponse | null;
+  const user = authState.user as TAuthResponse | null;
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [notificationModalVisible, setNotificationModalVisible] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0); 

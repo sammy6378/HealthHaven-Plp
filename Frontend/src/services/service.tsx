@@ -16,7 +16,7 @@ export type TAuthResponse = {
 
 
 export type TPatient ={
-    patient_id:number;
+    id:number;
     first_name: string;
     last_name: string;
     email: string;
@@ -46,7 +46,7 @@ export type TRegister = {
 }
 
 export type TAppointment = {
-    appointment_id:number;
+    id:number;
     patient_id:number;
     doctor_id:number;
     date: Date;
@@ -57,7 +57,7 @@ export type TAppointment = {
 
 // profile
 export type TProfile = {
-    patient_id:number;
+    id:number;
     age: number;
     gender: string;
     address: string;
@@ -66,7 +66,7 @@ export type TProfile = {
 
 
 export type TLogin = {
-    _id: number;
+    id: number;
     first_name: string;
     last_name: string;
     email: string;
@@ -76,7 +76,7 @@ export type TLogin = {
 // doctor
 
 export type TDoctor ={
-    doctor_id: number;
+    id: number;
     first_name: string;
     last_name: string;
     specialization: string;
@@ -100,8 +100,7 @@ baseQuery:fetchBaseQuery({
         const state = getState() as RootState;
       
         const authToken = state.auth.token;
-      
-      
+    
         // Determine which token to use, priority is given to admin token
         const token = authToken;
       
@@ -152,6 +151,14 @@ getAppointment: builder.query<TAppointment,number>({
 // profile
 getProfile: builder.query<TProfile[],void>({
     query: () => 'api/profiles',
+}),
+
+// get profile by id
+getProfileById: builder.query<TProfile,number>({
+    query: (id) => ({
+        url: `api/profile/${id}`,
+        method: 'GET',
+})
 }),
 
 // create profile
@@ -264,4 +271,5 @@ useToggleDoctorMutation,
 useDeleteDoctorMutation,
 useChangePasswordMutation,
 useResetPasswordMutation,
+useGetProfileByIdQuery,
 } = authService;

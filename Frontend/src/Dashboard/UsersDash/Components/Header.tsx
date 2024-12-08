@@ -7,9 +7,10 @@ import { TAuthResponse } from '../../../services/service';
 const Header = () => {
 
   const authState = useSelector((state: RootState) => state.auth);
-  const user = authState.patient as TAuthResponse | null;
+  const user = authState.user as TAuthResponse | null;
 
   const first_name = user ? user.first_name : '';
+  const last_name = user? user.last_name : '';
 
 
   // Determine greeting based on the current time
@@ -28,7 +29,7 @@ const Header = () => {
     <div className="flex flex-col p-5">
       <div className="mb-4">
         <h1 className="text-xl font-mono">{greeting},</h1>
-        <p className="text-3xl font-semibold">{first_name}</p>
+        <p className="text-3xl font-semibold">{first_name}  {last_name}</p>
       </div>
       <HealthStats />
     </div>

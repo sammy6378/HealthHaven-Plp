@@ -17,9 +17,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
 
   const authState = useSelector((state: RootState) => state.auth);
-  const user = authState.patient as TAuthResponse | null;
+  const user = authState.user as TAuthResponse | null;
 
   const first_name = user ? user.first_name : '';
+  const last_name = user? user.last_name : '';
 
   return (
     <>
@@ -34,7 +35,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         <div className=' border-b rounded-md flex justify-center shadow-lg cursor-pointer'>
           <img src='https://i.pinimg.com/564x/d4/90/9c/d4909cf3a4de812c4b39a63dcc41d48f.jpg' className='w-16' alt="logo image" />
-          <h3 className="text-2xl font-bold mt-4">TeleMed Health</h3>
+          <h3 className="text-2xl font-bold mt-4">HealthHaven Health</h3>
         </div>
 
       
@@ -50,7 +51,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
           {/* User information */}
           <div className="ml-3">
-            <h4 className="text-lg font-bold">{first_name}</h4>
+            <h4 className="text-lg font-bold">{first_name}  {last_name}</h4>
             <p className="text-sm text-gray-600">OutPatient</p>
           </div>
         </div>

@@ -22,7 +22,7 @@ const ProfilePage = () => {
 
   const [step, setStep] = useState(1); // Track the form step
   const authState = useSelector((state: RootState) => state.auth);
-  const user = authState.patient as TAuthResponse | null;
+  const user = authState.user as TAuthResponse | null;
   const loggedInUserId = user ? user.id : '';
 
   const { data: patients } = useGetPatientsQuery();
@@ -31,7 +31,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (patients) {
-      const userPatientData = patients.find((patient) => patient.patient_id === loggedInUserId);
+      const userPatientData = patients.find((patient) => patient.id === loggedInUserId);
+
+      console.log(userPatientData)
+
       if (userPatientData) {
         setFormData((prev) => ({
           ...prev,
