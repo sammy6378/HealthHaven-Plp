@@ -9,7 +9,7 @@ function LandingPage() {
     <div>
       <header className="appointment">
       <nav className="section__container nav__container">
-        <div className="nav__logo">Health<span>Haven</span> Healthcare</div>
+        <div className="nav__logo">Health<span>Haven</span></div>
         {/* <img src="./harar.png" alt="" /> */}
         <ul className="nav__links">
           <li className="link"><a href="#home">Home</a></li>
