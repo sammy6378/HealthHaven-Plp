@@ -9,7 +9,7 @@ import { cors } from 'hono/cors'
 const app = new Hono();
 
 const allowedOrigin = process.env.NODE_ENV === 'production'
-  ? '/' // Deployed frontend URL
+  ? 'https://health-haven-plp-front.vercel.app' // Deployed frontend URL
   : 'http://localhost:5173'; // Local development URL
 
 app.use('*', cors({

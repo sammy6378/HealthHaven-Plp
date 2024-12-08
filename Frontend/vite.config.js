@@ -10,12 +10,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://tel-med-application.vercel.app',
+        target: 'https://health-haven-plp.vercel.app',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
       '/auth': { // Adding proxy for /auth route
-        target: 'https://tel-med-application.vercel.app',
+        target: 'https://health-haven-plp.vercel.app',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/auth/, 'auth')
       }
