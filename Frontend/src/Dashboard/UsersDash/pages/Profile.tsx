@@ -79,6 +79,7 @@ const ProfilePage = () => {
       const photoUrl = response.data.secure_url;
 
       const data = {
+        id: loggedInUserId,
         age: Number(formData.age),
         gender: formData.gender,
         address: formData.address,
