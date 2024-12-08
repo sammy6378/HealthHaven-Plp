@@ -43,9 +43,9 @@ const Form: React.FC<FormProps> = ({ children })  =>{
         />
         <div className="relative z-10 text-center">
           <Notify />
-          <h2 className="text-4xl font-bold mb-4">TeleMed</h2>
+          <h2 className="text-4xl font-bold mb-4">HealthHaven</h2>
           <p className="mb-6">
-            Welcome to TeleMed. 
+            Welcome to HealthHaven. 
             We provide the best telemedicine services with a wide range of Health services.
             TeleMed is your one-stop solution for all your health needs.
           </p>
